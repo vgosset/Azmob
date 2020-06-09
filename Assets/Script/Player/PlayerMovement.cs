@@ -79,7 +79,7 @@ public class PlayerMovement : MonoBehaviour
 
         Vector3 dest = new Vector3(direction.x, 0, 0);
 
-        if (isInAir())
+        if (IsFall())
           transform.position += dest * airSpeed;
         else
           transform.position += dest * groundSpeed;
@@ -172,9 +172,15 @@ public class PlayerMovement : MonoBehaviour
         transform.rotation = Quaternion.Euler(0, 180, 0);
       }
     }
-    private bool isInAir()
+    public bool IsFall()
     {
       if (state == State.FALL)
+        return true;
+      return false;
+    }
+    public bool IsInAir()
+    {
+      if (state == State.FALL || state == State.JUMP || state == State.FREEZ)
         return true;
       return false;
     }

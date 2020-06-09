@@ -7,6 +7,10 @@ public class MainCamera : MonoBehaviour
   [SerializeField] private Transform target;
 
   [SerializeField] private Vector3 offset;
+  [SerializeField] private Vector3 offsetAir;
+  
+  [SerializeField] private float smooth;
+
 
   void Start()
   {
@@ -14,6 +18,16 @@ public class MainCamera : MonoBehaviour
 
   void LateUpdate()
   {
-    transform.position = target.position + offset;
+    if (target.GetComponent<PlayerMovement>().IsInAir())
+    {
+      Debug.Log("air");
+      transform.position = Vector3.Lerp(transform.position, target.position + offsetAir, smooth * Time.deltaTime);
+    }
+    else
+    {
+      Debug.Log("ground");
+
+      transform.position = Vector3.Lerp(transform.position, target.position + offset, smooth * Time.deltaTime);
+    }
   }
 }

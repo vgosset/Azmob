@@ -1344,6 +1344,8 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   target: {fileID: 566961774}
   offset: {x: 0, y: 5.17, z: -7.17}
+  offsetAir: {x: 0, y: 2, z: -7.17}
+  smooth: 5
 --- !u!20 &2035302004
 Camera:
   m_ObjectHideFlags: 0
