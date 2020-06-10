@@ -9398,7 +9398,7 @@ CapsuleCollider:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 5125195935944912212}
   m_Material: {fileID: 0}
-  m_IsTrigger: 1
+  m_IsTrigger: 0
   m_Enabled: 1
   m_Radius: 0.5000001
   m_Height: 2.2710233
@@ -9419,13 +9419,17 @@ MonoBehaviour:
   m_state: 0
   Target: {fileID: 0}
   distCac: 1.5
-  distance: 4
-  followSpeed: 3.5
+  distance: 6
+  followSpeed: 4
   runMulti: 1.2
-  t_hit: 3
-  t_go: 7
+  t_hit: {x: 6, y: 8}
+  t_go: {x: 2, y: 4}
   die: {fileID: 1400983582374415057}
   blood: {fileID: 1400983581852574253}
+  hitUpHeigth: 3
+  hitUpSpeed: 15
+  fallSpeed: 9
+  delayInAir: 0.75
 --- !u!114 &5125195935944912239
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -9453,7 +9457,7 @@ Rigidbody:
   m_UseGravity: 0
   m_IsKinematic: 0
   m_Interpolate: 0
-  m_Constraints: 0
+  m_Constraints: 126
   m_CollisionDetection: 0
 --- !u!95 &5125195935944912209
 Animator:

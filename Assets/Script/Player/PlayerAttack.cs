@@ -14,6 +14,8 @@ public class PlayerAttack : ComboManager
 
     private float fireTimer;
 
+    private bool a_isJump;
+
     private void Awake()
     {
         p_movement = GetComponent<PlayerMovement>();
@@ -34,27 +36,28 @@ public class PlayerAttack : ComboManager
     {
         if (fireTimer <= 0)
         {
-            fireTimer = fireRate;
-            anim.SetTrigger("attack");
-
-            StopAllCoroutines();
-            StartCoroutine(FreezMovement());
+            FireDetection();
         }
     }
+    
+    private void Attack()
+    {
+        fireTimer = fireRate;
+        anim.SetTrigger("attack");
 
-    public void FireActive()
-    {
-        p_weapon.SetState(true);
+        StopAllCoroutines();
+        StartCoroutine(FreezMovement());
     }
-    public void FireEnd()
+    private void JumpAttack()
     {
-        p_weapon.SetState(false);
+        fireTimer = fireRate * 1.2f;
+        anim.SetTrigger("jumpAttack");
+        p_movement.BlockJump();
     }
-    public void HasHit()
+    public void PlayerJump()
     {
-        PlusOne();
+        p_movement.Jump();
     }
-
     private IEnumerator FreezMovement()
     {
       p_movement.FreezeJump();
@@ -62,5 +65,57 @@ public class PlayerAttack : ComboManager
       yield return new WaitForSeconds(delayInAir);
 
       p_movement.UnFreezeJump();
+    }
+    private void ResetAllHit()
+    {
+        var e_life = FindObjectsOfType<EnemieLife>();
+
+        foreach (EnemieLife enemy in e_life)
+        {
+            enemy.ResetHit();
+        }
+    }
+
+    //////////////////////////////////////// Tools //////////////////////////////////////////////
+    
+    public void FireActive()
+    {
+        p_weapon.SetState(true);
+    }
+    public void FireEnd()
+    {
+        p_weapon.SetState(false);
+        
+        ResetAllHit();
+    }
+
+    public void SetJumpAttack(int id)
+    {
+        switch (id)
+        {
+            case 0:
+                    Debug.Log("jump true");
+                a_isJump = true;
+            break;
+            default:
+                    Debug.Log("jump false");
+                a_isJump = false;
+            break;
+        }
+    }
+    private void FireDetection()
+    {
+        if (p_movement.IsPend())
+        {
+            JumpAttack();
+        }
+        else
+        {
+            Attack();
+        }
+    }
+    public void HasHit()
+    {
+        PlusOne();
     }
 }

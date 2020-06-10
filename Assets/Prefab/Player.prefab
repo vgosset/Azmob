@@ -93,9 +93,9 @@ CapsuleCollider:
   m_IsTrigger: 0
   m_Enabled: 1
   m_Radius: 0.5000001
-  m_Height: 2
+  m_Height: 2.2710233
   m_Direction: 1
-  m_Center: {x: 0.000000059604645, y: 0, z: -0.00000008940697}
+  m_Center: {x: 0.00000004693279, y: 0.1355128, z: -0.00000009386558}
 --- !u!114 &4791518791095831061
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -109,10 +109,14 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   joysticMov: {fileID: 0}
-  jumpSpeed: 16
   jumpHeight: 7
-  fallingSpeed: 7
-  jumpDelay: 0.3
+  jumpDelay: 0.2
+  jumpSpeed: 25
+  fallingSpeed: 9
+  groundSpeed: 1.8
+  airSpeed: 1.2
+  j_multi: -17
+  f_multi: 18
 --- !u!95 &4791518791095831050
 Animator:
   serializedVersion: 3
@@ -144,6 +148,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 981c1e0e2dc2d67498751e537c153b49, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  d_combo: 1
+  delayInAir: 0.75
   fireRate: 0.25
 --- !u!1 &4791518791925502442
 GameObject:
@@ -157,8 +163,10 @@ GameObject:
   - component: {fileID: 4791518791925502446}
   - component: {fileID: 4791518791925502441}
   - component: {fileID: 4791518791925502440}
+  - component: {fileID: 1937735062}
+  - component: {fileID: 1937735061}
   m_Layer: 0
-  m_Name: Cube
+  m_Name: Weapon
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -171,13 +179,13 @@ Transform:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 4791518791925502442}
-  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 0.83, y: 0.01, z: 0}
+  m_LocalRotation: {x: 0, y: 0, z: -0.357064, w: 0.93407995}
+  m_LocalPosition: {x: 0.401, y: -0.312, z: 0.435}
   m_LocalScale: {x: 1.3110667, y: 0.38014, z: 0.38014}
   m_Children: []
   m_Father: {fileID: 4791518791095831060}
   m_RootOrder: 0
-  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: -41.84}
 --- !u!33 &4791518791925502446
 MeshFilter:
   m_ObjectHideFlags: 0
@@ -231,8 +239,36 @@ BoxCollider:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 4791518791925502442}
   m_Material: {fileID: 0}
-  m_IsTrigger: 0
+  m_IsTrigger: 1
   m_Enabled: 1
   serializedVersion: 2
   m_Size: {x: 1, y: 1, z: 1}
   m_Center: {x: 0, y: 0, z: 0}
+--- !u!54 &1937735062
+Rigidbody:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 4791518791925502442}
+  serializedVersion: 2
+  m_Mass: 0.0000001
+  m_Drag: 0
+  m_AngularDrag: 0
+  m_UseGravity: 0
+  m_IsKinematic: 0
+  m_Interpolate: 0
+  m_Constraints: 0
+  m_CollisionDetection: 0
+--- !u!114 &1937735061
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 4791518791925502442}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: a0074d393d75aea4f83a1b958906cac6, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 

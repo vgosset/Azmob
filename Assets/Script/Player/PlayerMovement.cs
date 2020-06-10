@@ -5,6 +5,7 @@ using UnityEngine;
 public class PlayerMovement : MonoBehaviour
 {
     private PlayerAttack p_attack;
+    private Weapon weapon;
 
     [SerializeField] private VariableJoystick joysticMov;
     
@@ -26,6 +27,7 @@ public class PlayerMovement : MonoBehaviour
     private Vector3 fallingDest;
 
     private float speed;
+    private bool jumpFreeze;
 
     enum State
     {
@@ -38,6 +40,7 @@ public class PlayerMovement : MonoBehaviour
     private void Awake()
     {
         p_attack = GetComponent<PlayerAttack>();
+        weapon = transform.GetChild(0).GetComponent<Weapon>();
     }
 
     void Start()
@@ -55,7 +58,6 @@ public class PlayerMovement : MonoBehaviour
         {
           Movement();
         }
-        
     }
     private void Movement()
     {
@@ -119,17 +121,29 @@ public class PlayerMovement : MonoBehaviour
     {
       state = State.J_PEND;
 
+      weapon.SetAttackType(0);
       yield return new WaitForSeconds(jumpDelay);
       
-      Jump();
+      if (!jumpFreeze)
+        Jump();
+    }
+    public void BlockJump()
+    {
+      jumpFreeze = true;
     }
     public void Jump()
     {
-      Vector3 dest = transform.position + new Vector3(0, jumpHeight, 0);
+      weapon.SetAttackType(1);
 
-      jumpDest = dest;
-      state = State.JUMP;
-      speed = jumpSpeed;
+      if (state != State.JUMP)
+      {
+        Vector3 dest = transform.position + new Vector3(0, jumpHeight, 0);
+
+        jumpDest = dest;
+        speed = jumpSpeed;
+        state = State.JUMP;
+        jumpFreeze = false;
+      }
     }
     
     /////////////////////////////////////// Tools ///////////////////////////////////////////////////
@@ -178,6 +192,12 @@ public class PlayerMovement : MonoBehaviour
         return true;
       return false;
     }
+    public bool IsPend()
+    {
+      if (state == State.J_PEND)
+        return true;
+      return false;
+    }
     public bool IsInAir()
     {
       if (state == State.FALL || state == State.JUMP || state == State.FREEZ)
@@ -189,9 +209,9 @@ public class PlayerMovement : MonoBehaviour
     {
       float x = 0;
 
-      if (joysticMov.Horizontal < 0)
+      if (joysticMov.Horizontal <= -0.3f)
         x = -0.1f;
-      else if (joysticMov.Horizontal > 0)
+      else if (joysticMov.Horizontal >= 0.3f)
         x = 0.1f;
       direction = new Vector3(x, 0, 0);
     }

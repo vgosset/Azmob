@@ -13,8 +13,8 @@ public class EnemieMove : MonoBehaviour
     public float followSpeed;
     public float runMulti;
 
-    public float t_hit;
-    public float t_go;
+    public Vector2 t_hit;
+    public Vector2 t_go;
 
     public enum M_State
     {
@@ -26,9 +26,12 @@ public class EnemieMove : MonoBehaviour
      {
          while(true)
          {
-             yield return new WaitForSeconds(t_hit);
+             float R_t_hit = Random.Range(t_hit.x, t_hit.y);
+             float R_t_go = Random.Range(t_go.x, t_go.y);
+
+             yield return new WaitForSeconds(R_t_hit);
              m_state = M_State.HIT;
-             yield return new WaitForSeconds(t_go);
+             yield return new WaitForSeconds(R_t_go);
              m_state = M_State.GO_TO;
          }
      }

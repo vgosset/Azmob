@@ -5,9 +5,10 @@ using UnityEngine;
 public class Weapon : MonoBehaviour
 {
     private bool state;
-    private bool hasHit;
 
     private PlayerAttack p_attack;
+
+    bool jumpAttack;
 
     private void Awake()
     {
@@ -21,18 +22,40 @@ public class Weapon : MonoBehaviour
     public void SetState(bool s)
     {
         state = s;
-        hasHit = false;
+    }
+    public void SetAttackType(int id)
+    {
+        switch (id)
+        {
+            case 0:
+                jumpAttack = true;
+            break;
+            default:
+                jumpAttack = false;
+            break;
+        }
     }
     void OnTriggerStay(Collider col)
     {
-        if (state && !hasHit)
+        if (state)
         {
             if (col.tag == "enemie")
             {
-                col.transform.GetComponent<EnemieLife>().GetHit(1);
+                int id;
 
-                p_attack.HasHit();
-                hasHit = true;
+                if (jumpAttack)
+                {
+                    id = 1;
+                }
+                else
+                {
+                    id = 0;
+                }
+
+                if (col.transform.GetComponent<EnemieLife>().GetHit(id, 1))
+                {
+                    p_attack.HasHit();
+                }
             }
         }
     }

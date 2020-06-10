@@ -31,8 +31,7 @@ public class ComboDisplay : MonoBehaviour
             case 2:
                 anim.SetTrigger("appear");
             break;
-            case 3:
-                anim.SetTrigger("reset");
+            default:
             break;
         }
     }
@@ -41,10 +40,10 @@ public class ComboDisplay : MonoBehaviour
         switch (id)
         {
             case 0:
-                transform.localPosition = new Vector2(700, 0);
+                transform.localPosition = new Vector2(300, 0);
             break;
-            case 1:
-                transform.localPosition = new Vector2(-700, 0);
+            default:
+                transform.localPosition = new Vector2(-300, 0);
             break;
         }
     }

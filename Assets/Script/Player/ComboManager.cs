@@ -4,7 +4,7 @@ using UnityEngine;
 
 public class ComboManager : MonoBehaviour
 {
-    [SerializeField] private int d_combo;
+    [SerializeField] private float d_combo;
     
     private int a_combo;
 

@@ -10,10 +10,15 @@ public class EnemieLife : MonoBehaviour
     private Animator anim;
     
     private bool alive = true;
+    private bool hasHit = false;
 
-    void Start()
+    private void Awake()
     {
+        m_enemie = GetComponent<Enemie>();
         anim = GetComponent<Animator>();
+    }
+    private void Start()
+    {
     }
 
     void Update()
@@ -21,24 +26,40 @@ public class EnemieLife : MonoBehaviour
         
     }
 
-    public void GetHit(int value)
+    public bool GetHit(int id, int value)
     {
-        if (alive)
+        if (alive && !hasHit)
         {
             a_life -= value;
             
             if (a_life <= 0)
             {
                 Die();
-                Debug.Log("dead");
             }
             else
                 anim.SetTrigger("bled");
+
+            switch (id)
+            {
+                case 0:
+                    m_enemie.Freeze();
+                break;
+                default:
+                    m_enemie.HitUp();
+                break;
+            }
+            hasHit = true;
+            return true;
         }
+        return false;
     }
     private void Die()
     {
         alive = false;
         anim.SetTrigger("die");
+    }
+    public void ResetHit()
+    {
+        hasHit = false;
     }
 }

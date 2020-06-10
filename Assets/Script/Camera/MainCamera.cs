@@ -20,13 +20,10 @@ public class MainCamera : MonoBehaviour
   {
     if (target.GetComponent<PlayerMovement>().IsInAir())
     {
-      Debug.Log("air");
       transform.position = Vector3.Lerp(transform.position, target.position + offsetAir, smooth * Time.deltaTime);
     }
     else
     {
-      Debug.Log("ground");
-
       transform.position = Vector3.Lerp(transform.position, target.position + offset, smooth * Time.deltaTime);
     }
   }
