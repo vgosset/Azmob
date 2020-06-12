@@ -4,15 +4,13 @@ using UnityEngine;
 
 public class Enemie : EnemieMove
 {
-    [SerializeField] private ParticleSystem die;
-    [SerializeField] private ParticleSystem blood;
+    private EnemieWeapon p_weapon;
     
     [SerializeField] private float hitUpHeigth;
     [SerializeField] private float hitUpSpeed;
     [SerializeField] private float fallSpeed;
     [SerializeField] private float delayInAir;
 
-    private Animator anim;
     private State state;
 
     private bool getHitUp = false;
@@ -32,7 +30,7 @@ public class Enemie : EnemieMove
         m_state = M_State.GO_TO;
 
         anim = GetComponent<Animator>();
-
+        p_weapon = transform.GetChild(0).GetComponent<EnemieWeapon>();
         StartCoroutine("SetRunLoop");
     }
 
@@ -42,6 +40,12 @@ public class Enemie : EnemieMove
     }
     private void Update()
     {
+        float dt = Time.deltaTime;
+
+        if (fireTimer >= 0)
+        {
+            fireTimer -= dt;
+        }
         PosUpdate();
     }
     private void LateUpdate()
@@ -106,14 +110,6 @@ public class Enemie : EnemieMove
       return false;
     }
     
-    public void BloodEffect()
-    {
-        blood.Play();
-    }
-    public void DieEffect()
-    {
-        die.Play();
-    }
     public void Dead()
     {
         Invoke("DestroySelf", 2);
@@ -137,6 +133,24 @@ public class Enemie : EnemieMove
             distCac = -Mathf.Abs(distCac);
 
             transform.rotation = Quaternion.Euler(0, 0, 0);
+        }
+    }
+    public void FireActive()
+    {
+        p_weapon.SetState(true);
+    }
+    public void FireEnd()
+    {
+        p_weapon.SetState(false);
+        ResetAllHit();
+    }
+    private void ResetAllHit()
+    {
+        var p_life = FindObjectsOfType<PlayerLife>();
+
+        foreach (PlayerLife player in p_life)
+        {
+            player.ResetHit();
         }
     }
 }

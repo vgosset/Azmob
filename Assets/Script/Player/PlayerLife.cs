@@ -2,36 +2,28 @@
 using System.Collections.Generic;
 using UnityEngine;
 
-public class EnemieLife : MonoBehaviour
+public class PlayerLife : MonoBehaviour
 {
-    [SerializeField] private float a_life;
+    [SerializeField] private int a_life;
 
     [SerializeField] private ParticleSystem die;
     [SerializeField] private ParticleSystem blood;
 
-    private Enemie m_enemie;
-    
     private Animator anim;
-    
+
     private bool alive = true;
     private bool hasHit = false;
 
     private void Awake()
     {
-        m_enemie = GetComponent<Enemie>();
         anim = GetComponent<Animator>();
-    }
-
-    private void Start()
-    {
     }
 
     void Update()
     {
         
     }
-
-    public bool GetHit(int id, int value)
+    public bool GetHit(int value)
     {
         if (alive && !hasHit)
         {
@@ -44,15 +36,6 @@ public class EnemieLife : MonoBehaviour
             else
                 anim.SetTrigger("bled");
 
-            switch (id)
-            {
-                case 0:
-                    m_enemie.Freeze();
-                break;
-                default:
-                    m_enemie.HitUp();
-                break;
-            }
             hasHit = true;
             return true;
         }

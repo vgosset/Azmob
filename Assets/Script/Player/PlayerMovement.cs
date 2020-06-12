@@ -12,21 +12,30 @@ public class PlayerMovement : MonoBehaviour
     [SerializeField] private float jumpHeight;
     [SerializeField] private float jumpDelay;
 
+    [SerializeField] private float DashLenght;
+    [SerializeField] private float DashSpeed;
+    [SerializeField] private float DashDelay;
+
     [SerializeField] private float jumpSpeed;
     [SerializeField] private float fallingSpeed;
     [SerializeField] private float groundSpeed;
     [SerializeField] private float airSpeed;
 
     [SerializeField] private float j_multi;
+    [SerializeField] private float d_multi;
     [SerializeField] private float f_multi;
 
     private State state;
 
     private Vector3 direction;
     private Vector3 jumpDest;
+    private Vector3 DashDest;
     private Vector3 fallingDest;
 
     private float speed;
+    private float dashSide = -1;
+    private float dashTimer;
+
     private bool jumpFreeze;
 
     enum State
@@ -35,6 +44,7 @@ public class PlayerMovement : MonoBehaviour
       JUMP,
       J_PEND,
       FREEZ,
+      DASH,
       NONE
     }
     private void Awake()
@@ -45,27 +55,45 @@ public class PlayerMovement : MonoBehaviour
 
     void Start()
     {
+        Init();
         state = State.NONE;
+    }
+    private void Init()
+    {
     }
 
     void Update()
     {
+        float dt = Time.deltaTime;
+
         if (state == State.FREEZ)
         {
           
         }
         else 
         {
-          Movement();
+          Movement(dt);
         }
     }
-    private void Movement()
+    private void Movement(float dt)
     {
-      if (state == State.FALL || state == State.JUMP)
+      if (dashTimer > 0)
+      {
+        dashTimer -= dt;
+      }
+      if (state == State.DASH)
+      {
+          if (GoToDest(DashDest, d_multi))
+          {
+          }
+          else
+            state = State.FALL;
+      }
+      else if (state == State.FALL || state == State.JUMP)
       {
         JumpBehavior();
       }
-      if (state == State.FALL || state == State.NONE)
+      else if (state == State.FALL || state == State.NONE)
       {
         GetDir();
         SetRot();
@@ -145,6 +173,21 @@ public class PlayerMovement : MonoBehaviour
         jumpFreeze = false;
       }
     }
+    public void Dash()
+    {
+      if (state != State.DASH && dashTimer <= 0)
+      {
+        dashTimer = DashDelay;
+        
+        float side = DashLenght * dashSide;
+
+        Vector3 dest = transform.position + new Vector3(side, 0, 0);
+        
+        DashDest = dest;
+        speed = DashSpeed;
+        state = State.DASH;
+      }
+    }
     
     /////////////////////////////////////// Tools ///////////////////////////////////////////////////
 
@@ -178,11 +221,13 @@ public class PlayerMovement : MonoBehaviour
       if (direction.x > 0)
       {
         UiManager.Instance.SetComboPos(0);
+        dashSide = 1;
         transform.rotation = Quaternion.Euler(0, 0, 0);
       }
       else if (direction.x < 0)
       {
         UiManager.Instance.SetComboPos(1);
+        dashSide = -1;
         transform.rotation = Quaternion.Euler(0, 180, 0);
       }
     }

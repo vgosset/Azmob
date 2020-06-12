@@ -12,9 +12,14 @@ public class EnemieMove : MonoBehaviour
     public float distance;
     public float followSpeed;
     public float runMulti;
+    public float fireDelay;
 
+    public Animator anim;
+    
     public Vector2 t_hit;
     public Vector2 t_go;
+
+    public float fireTimer;
 
     public enum M_State
     {
@@ -40,16 +45,15 @@ public class EnemieMove : MonoBehaviour
     {
         if (m_state == M_State.HIT)
         {
-            // MoveAround();
             MoveTo();
         }
         else if (m_state == M_State.GO_TO)
         {
-            Follow();
+            GoTo();
         }
     }
 
-    private void Follow()
+    private void GoTo()
     {
         float step = Time.deltaTime * followSpeed;
 
@@ -64,5 +68,18 @@ public class EnemieMove : MonoBehaviour
         Vector3 dest = new Vector3(Target.position.x + distCac, transform.position.y, transform.position.z);
 
         transform.position = Vector3.MoveTowards(transform.position, dest, step);
+
+        if(Vector3.Distance(dest, transform.position) <= 0.7f)
+        {
+            if (fireTimer <= 0)
+            {
+                fireTimer = fireDelay;
+                Fire();
+            }
+        }
+    }
+    private void Fire()
+    {
+        anim.SetTrigger("attack");
     }
 }
