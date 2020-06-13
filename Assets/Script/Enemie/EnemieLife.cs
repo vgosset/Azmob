@@ -61,6 +61,9 @@ public class EnemieLife : MonoBehaviour
     private void Die()
     {
         alive = false;
+
+        m_enemie.enabled = false;
+        
         anim.SetTrigger("die");
     }
     public void ResetHit()

@@ -9443,7 +9443,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 219c17f1ec58f624e95b9e53c767d719, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  a_life: 8
+  a_life: 6
   die: {fileID: 1400983582374415057}
   blood: {fileID: 1400983581852574253}
 --- !u!54 &5125195935944912236

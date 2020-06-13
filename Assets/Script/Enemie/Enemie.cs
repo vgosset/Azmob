@@ -50,6 +50,10 @@ public class Enemie : EnemieMove
     }
     private void LateUpdate()
     {
+        StateManager();
+    }
+    private void StateManager()
+    {
         if (state == State.HITUP)
         {
             Vector3 dest = new Vector3(transform.position.x, hitUpHeigth, transform.position.z);

@@ -6,31 +6,41 @@ public class Spawner : MonoBehaviour
 {
     [SerializeField] private GameObject Enemie;
 
-    [SerializeField] private List<Vector3> spawnPos;
+    [SerializeField] private List<Transform> spawnPos;
 
     [SerializeField] private float spawnRate;
+    [SerializeField] private float spawnMulti;
 
-    void Start()
+    private float spawnTimer;
+
+    private void Start()
     {
-        Spawn();
-        StartCoroutine("StartEnemieSpawnLoop");
+        spawnTimer = 3f;
     }
 
-    public IEnumerator StartEnemieSpawnLoop()
-     {
-         while(true)
-         {
-             yield return new WaitForSeconds(spawnRate);
-             
-             Spawn();
-         }
-     }
+    private void Update()
+    {
+        if (spawnTimer <=0)
+        {
+            Spawn();
+        }
+        UiManager.Instance.UpdateSpawnTimer(spawnTimer, spawnRate);
+        spawnTimer -= Time.deltaTime;
+    }
+     
      private void Spawn()
      {
+        UiManager.Instance.SpawnEffect();
+        
         for (int i = 0; i < spawnPos.Count; i++)
         {
-            Instantiate(Enemie, spawnPos[i], Quaternion.identity);
+            Vector3 pos = new Vector3(spawnPos[i].position.x, -4.3f, 0);
+
+            Instantiate(Enemie, pos, Quaternion.identity);
         }
+
+        spawnRate *= spawnMulti;
+        spawnTimer = spawnRate;
      }
 }
 
