@@ -139,9 +139,9 @@ public class PlayerAttack : ComboManager
     }
     private void DownAirAttack()
     {
-        fireTimer = fireRate * 1.5f;
+        fireTimer = fireRate * 1.2f;
 
         anim.SetTrigger("downAir");
-        p_movement.DashDownAir();
+        // p_movement.DashDownAir();
     }
 }

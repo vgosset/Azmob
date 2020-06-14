@@ -163,7 +163,7 @@ public class PlayerMovement : MonoBehaviour
     }
     private void DownAirDetection()
     {
-        if (joysticMov.Vertical <= -0.3f)
+        if (joysticMov.Vertical <= 0.2f)
           downAirOn = true;
         else
           downAirOn = false;
