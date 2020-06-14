@@ -8,6 +8,7 @@ public class UiManager : MonoBehaviour
     public static UiManager Instance;
 
     [SerializeField] private ComboDisplay d_combo;
+    [SerializeField] private ScoreManager s_manager;
     
     [SerializeField] private Slider l_bar;
 
@@ -36,6 +37,12 @@ public class UiManager : MonoBehaviour
     {
         d_combo.TriggerAnim(id);
         d_combo.UpdateTxt(amount);
+
+        s_manager.UpdateOnCombo(amount);
+    }
+    public void HasKill()
+    {
+        s_manager.UpdateOnKill();
     }
     public void SetComboPos(int id)
     {

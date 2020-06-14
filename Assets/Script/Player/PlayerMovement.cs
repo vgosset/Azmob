@@ -89,11 +89,11 @@ public class PlayerMovement : MonoBehaviour
           else
             state = State.FALL;
       }
-      else if (state == State.FALL || state == State.JUMP)
+      if (state == State.FALL || state == State.JUMP)
       {
         JumpBehavior();
       }
-      else if (state == State.FALL || state == State.NONE)
+      if (state == State.FALL || state == State.NONE)
       {
         GetDir();
         SetRot();

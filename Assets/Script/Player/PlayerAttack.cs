@@ -7,12 +7,9 @@ public class PlayerAttack : ComboManager
     private PlayerMovement p_movement;
     private Weapon p_weapon;
 
-    private Animator anim;
 
     [SerializeField] private float delayInAir;
-    [SerializeField] private float fireRate;
 
-    private float fireTimer;
 
     private bool a_isJump;
 
@@ -20,16 +17,36 @@ public class PlayerAttack : ComboManager
     {
         p_movement = GetComponent<PlayerMovement>();
         p_weapon = transform.GetChild(0).GetComponent<Weapon>();
-    }
-    void Start()
-    {
         anim = GetComponent<Animator>();
     }
     void Update()
     {
+        float dt = Time.deltaTime;
+
+        TimerHandler(dt);
+    }
+    private void TimerHandler(float dt)
+    {
         if (fireTimer > 0)
         {
-            fireTimer -= Time.deltaTime;
+            fireTimer -= dt;
+        }
+        if (timer_hit < 0 && a_combo_hit > 0)
+        {
+          a_combo_hit = 0;
+          UiManager.Instance.ComboState(3);
+        }
+        else if (timer_hit > 0)
+        {
+          timer_hit -= dt;
+        }
+        if (timer_type < 0)
+        {
+          a_combo_type = 0;
+        }
+        else if (timer_type > 0)
+        {
+          timer_type -= dt;
         }
     }
     public void Fire()
@@ -42,8 +59,7 @@ public class PlayerAttack : ComboManager
     
     private void Attack()
     {
-        fireTimer = fireRate;
-        anim.SetTrigger("attack");
+        DefineAttackType();
 
         StopAllCoroutines();
         StartCoroutine(FreezMovement());

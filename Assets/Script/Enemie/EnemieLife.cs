@@ -39,6 +39,7 @@ public class EnemieLife : MonoBehaviour
             
             if (a_life <= 0)
             {
+                UiManager.Instance.HasKill();
                 Die();
             }
             else

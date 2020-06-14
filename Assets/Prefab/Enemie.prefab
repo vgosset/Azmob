@@ -9424,13 +9424,16 @@ MonoBehaviour:
   runMulti: 1.2
   fireDelay: 1.2
   anim: {fileID: 0}
-  t_hit: {x: 6, y: 8}
-  t_go: {x: 2, y: 4}
+  t_hit: {x: 4, y: 10}
+  t_go: {x: 2, y: 5}
+  mat_hit: {fileID: 2100000, guid: e161740d1dd90e74aa512fec391dbcaa, type: 2}
+  mat_go: {fileID: 2100000, guid: 2d2beae80a9dfda44adf229f2a4438a6, type: 2}
   fireTimer: 0
+  mesh: {fileID: 5125195935944912210}
   hitUpHeigth: 3
   hitUpSpeed: 15
   fallSpeed: 9
-  delayInAir: 0.75
+  delayInAir: 0.9
 --- !u!114 &5125195935944912239
 MonoBehaviour:
   m_ObjectHideFlags: 0

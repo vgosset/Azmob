@@ -19,7 +19,12 @@ public class EnemieMove : MonoBehaviour
     public Vector2 t_hit;
     public Vector2 t_go;
 
+    public Material mat_hit;
+    public Material mat_go;
+
     public float fireTimer;
+
+    public MeshRenderer mesh;
 
     public enum M_State
     {
@@ -35,9 +40,14 @@ public class EnemieMove : MonoBehaviour
              float R_t_go = Random.Range(t_go.x, t_go.y);
 
              yield return new WaitForSeconds(R_t_hit);
+
              m_state = M_State.HIT;
+             mesh.material = mat_hit;
+             
              yield return new WaitForSeconds(R_t_go);
+             
              m_state = M_State.GO_TO;
+             mesh.material = mat_go;
          }
      }
 

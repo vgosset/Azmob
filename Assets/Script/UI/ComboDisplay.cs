@@ -32,6 +32,7 @@ public class ComboDisplay : MonoBehaviour
                 anim.SetTrigger("appear");
             break;
             default:
+                anim.SetTrigger("reset");
             break;
         }
     }
