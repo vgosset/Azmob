@@ -110,11 +110,9 @@ public class PlayerAttack : ComboManager
         switch (id)
         {
             case 0:
-                    Debug.Log("jump true");
                 a_isJump = true;
             break;
             default:
-                    Debug.Log("jump false");
                 a_isJump = false;
             break;
         }
@@ -125,13 +123,25 @@ public class PlayerAttack : ComboManager
         {
             JumpAttack();
         }
+        else if (p_movement.downAirOn)
+        {
+            DownAirAttack();
+        }
         else
         {
             Attack();
+            // DownAirAttack();
         }
     }
     public void HasHit()
     {
         PlusOne();
+    }
+    private void DownAirAttack()
+    {
+        fireTimer = fireRate * 1.5f;
+
+        anim.SetTrigger("downAir");
+        p_movement.DashDownAir();
     }
 }

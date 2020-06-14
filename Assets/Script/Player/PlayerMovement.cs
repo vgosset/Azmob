@@ -37,6 +37,9 @@ public class PlayerMovement : MonoBehaviour
     private float dashTimer;
 
     private bool jumpFreeze;
+    
+    [HideInInspector]
+    public bool downAirOn = false;
 
     enum State
     {
@@ -100,6 +103,25 @@ public class PlayerMovement : MonoBehaviour
         Move();
         JumpDetection();
       }
+      if (state == State.FALL)
+      {
+        DownAirDetection();
+      }
+    }
+    public void DashDownAir()
+    {
+      if (state != State.DASH && dashTimer <= 0)
+      {
+        // dashTimer = DashDelay;
+        
+        // float side = DashLenght * dashSide;
+
+        Vector3 dest = new Vector3(transform.position.x, -4.3f, 0);
+        
+        DashDest = dest;
+        speed = DashSpeed;
+        state = State.DASH;
+      }
     }
     private void Move()
     {
@@ -138,6 +160,13 @@ public class PlayerMovement : MonoBehaviour
           state = State.FALL;
         }
       }
+    }
+    private void DownAirDetection()
+    {
+        if (joysticMov.Vertical <= -0.3f)
+          downAirOn = true;
+        else
+          downAirOn = false;
     }
     
     private void JumpDetection()
@@ -209,7 +238,6 @@ public class PlayerMovement : MonoBehaviour
         float step = Time.deltaTime * speed;
 
         speed += Time.deltaTime * multi;
-
         transform.position = Vector3.MoveTowards(transform.position, dest, step);
         return true;
       }
