@@ -5,7 +5,8 @@ using UnityEngine.UI;
 
 public class ScoreManager : MonoBehaviour
 {
-    [SerializeField] private Text display;
+    [SerializeField] private Text d_combo;
+    [SerializeField] private Text d_final;
 
     [SerializeField] private float a_base;
     [SerializeField] private float a_multi;
@@ -13,17 +14,25 @@ public class ScoreManager : MonoBehaviour
     [SerializeField] private float a_kill_base;
 
     private float c_amount;
+    private float t_amount;
 
-    void Start()
+    private Animator anim;
+
+    private void Awake()
+    {
+        anim = GetComponent<Animator>();
+    }
+    private void Start()
     {
         c_amount = 0;
-        UpdateScore();
+        anim.SetTrigger("on");
     }
 
-    void Update()
+    private void Update()
     {
         
     }
+
     public void UpdateOnCombo(int amount)
     {
         float multi = 1 + (a_multi * (amount - 1));
@@ -31,15 +40,31 @@ public class ScoreManager : MonoBehaviour
         
         c_amount += f_amount;
 
-        UpdateScore();
+        anim.SetTrigger("addCombo");
+
+        UpdateComboScore();
     }
+
     public void UpdateOnKill()
     {
         c_amount += a_kill_base;
-        UpdateScore();
+        UpdateComboScore();
     }
-    private void UpdateScore()
+
+    public void UpdateComboScore()
     {
-        display.text = c_amount.ToString();
+        d_combo.text = c_amount.ToString();
+    }
+    public void ComboEnd()
+    {
+        t_amount += c_amount;
+        c_amount = 0;
+
+        anim.SetTrigger("addTotal");
+
+    }
+    public void UpdateFinalScore()
+    {
+        d_final.text = t_amount.ToString();
     }
 }

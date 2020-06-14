@@ -161,13 +161,7 @@ public class PlayerMovement : MonoBehaviour
         }
       }
     }
-    private void DownAirDetection()
-    {
-        if (joysticMov.Vertical <= 0.2f)
-          downAirOn = true;
-        else
-          downAirOn = false;
-    }
+    
     
     private void JumpDetection()
     {
@@ -220,6 +214,14 @@ public class PlayerMovement : MonoBehaviour
     
     /////////////////////////////////////// Tools ///////////////////////////////////////////////////
 
+    private void DownAirDetection()
+    {
+        if (joysticMov.Vertical <= 0.2f)
+          downAirOn = true;
+        else
+          downAirOn = false;
+    }
+    
     public void FreezeJump()
     {
       if (state != State.NONE)
@@ -248,13 +250,13 @@ public class PlayerMovement : MonoBehaviour
     {
       if (direction.x > 0)
       {
-        UiManager.Instance.SetComboPos(0);
+        // UiManager.Instance.SetComboPos(0);
         dashSide = 1;
         transform.rotation = Quaternion.Euler(0, 0, 0);
       }
       else if (direction.x < 0)
       {
-        UiManager.Instance.SetComboPos(1);
+        // UiManager.Instance.SetComboPos(1);
         dashSide = -1;
         transform.rotation = Quaternion.Euler(0, 180, 0);
       }

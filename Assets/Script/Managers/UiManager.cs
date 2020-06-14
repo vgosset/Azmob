@@ -51,6 +51,10 @@ public class UiManager : MonoBehaviour
     public void ComboState(int id)
     {
         d_combo.TriggerAnim(id);
+        if (id == 3)
+        {
+            s_manager.ComboEnd();
+        }
     }
     public void ResetScene()
     {
