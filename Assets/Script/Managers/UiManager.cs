@@ -9,6 +9,7 @@ public class UiManager : MonoBehaviour
 
     [SerializeField] private ComboDisplay d_combo;
     [SerializeField] private ScoreManager s_manager;
+    [SerializeField] private Landscape landscape;
     
     [SerializeField] private Slider l_bar;
 
@@ -86,7 +87,7 @@ public class UiManager : MonoBehaviour
     public void SpawnEffect()
     {
         popUp.SetTrigger("popUp");
-
+        landscape.NextLandscape();
         popUp.transform.GetChild(0).GetComponent<Text>().text = spawnTxt;
     }
 }

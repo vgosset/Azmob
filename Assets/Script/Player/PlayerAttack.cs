@@ -9,8 +9,11 @@ public class PlayerAttack : ComboManager
 
 
     [SerializeField] private float delayInAir;
+    [SerializeField] private float jumpDelay;
 
-
+    private float j_attackTimer;
+    private bool j_attackOn = false;
+    private bool a_typeJump = false;
     private bool a_isJump;
 
     private void Awake()
@@ -22,7 +25,13 @@ public class PlayerAttack : ComboManager
     void Update()
     {
         float dt = Time.deltaTime;
-
+        
+        if (j_attackOn)
+        {
+            j_attackTimer += dt;
+            if (j_attackTimer > jumpDelay)
+                a_typeJump = true;
+        }
         TimerHandler(dt);
     }
     private void TimerHandler(float dt)
@@ -53,10 +62,16 @@ public class PlayerAttack : ComboManager
     {
         if (fireTimer <= 0)
         {
-            FireDetection();
+            Invoke("FireDetection", 0.05f);
         }
     }
-    
+    public void StateTimerJump(bool state)
+    {
+        j_attackOn = state;
+
+        if (!state)
+            j_attackTimer = 0;
+    }
     private void Attack()
     {
         DefineAttackType();
@@ -66,9 +81,12 @@ public class PlayerAttack : ComboManager
     }
     private void JumpAttack()
     {
-        fireTimer = fireRate * 1.2f;
+        p_weapon.SetAttackType(0);
+
+        fireTimer = fireRate * 1.5f;
         anim.SetTrigger("jumpAttack");
         p_movement.BlockJump();
+        a_typeJump = false;
     }
     public void PlayerJump()
     {
@@ -90,6 +108,11 @@ public class PlayerAttack : ComboManager
         {
             enemy.ResetHit();
         }
+    }
+    public void UpdateJumpAttackTimer()
+    {
+        j_attackTimer += Time.deltaTime;
+        Debug.Log(j_attackTimer);
     }
 
     //////////////////////////////////////// Tools //////////////////////////////////////////////
@@ -119,18 +142,20 @@ public class PlayerAttack : ComboManager
     }
     private void FireDetection()
     {
-        if (p_movement.IsPend())
+        if (/*p_movement.IsPend() ||*/ a_typeJump)
         {
             JumpAttack();
         }
-        else if (p_movement.downAirOn)
+        else if (p_movement.A_down)
         {
-            DownAirAttack();
+            if (p_movement.IsFall())
+                DownAirAttack();
+            else if (p_movement.IsOnGround())
+                DownAttack();
         }
         else
         {
             Attack();
-            // DownAirAttack();
         }
     }
     public void HasHit()
@@ -139,9 +164,15 @@ public class PlayerAttack : ComboManager
     }
     private void DownAirAttack()
     {
-        fireTimer = fireRate * 1.2f;
+        fireTimer = fireRate * 1.5f;
 
         anim.SetTrigger("downAir");
         // p_movement.DashDownAir();
+    }
+    private void DownAttack()
+    {
+        fireTimer = fireRate * 3f;
+
+        anim.SetTrigger("downAttack");
     }
 }

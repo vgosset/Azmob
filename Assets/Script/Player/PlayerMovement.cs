@@ -8,6 +8,8 @@ public class PlayerMovement : MonoBehaviour
     private Weapon weapon;
 
     [SerializeField] private VariableJoystick joysticMov;
+
+    [SerializeField] private ParticleSystem fx_dash;
     
     [SerializeField] private float jumpHeight;
     [SerializeField] private float jumpDelay;
@@ -27,10 +29,14 @@ public class PlayerMovement : MonoBehaviour
 
     private State state;
 
+    private Animator anim;
+
     private Vector3 direction;
     private Vector3 jumpDest;
     private Vector3 DashDest;
     private Vector3 fallingDest;
+
+    private Rigidbody rb;
 
     private float speed;
     private float dashSide = -1;
@@ -39,7 +45,7 @@ public class PlayerMovement : MonoBehaviour
     private bool jumpFreeze;
     
     [HideInInspector]
-    public bool downAirOn = false;
+    public bool A_down = false;
 
     enum State
     {
@@ -52,6 +58,8 @@ public class PlayerMovement : MonoBehaviour
     }
     private void Awake()
     {
+        rb = GetComponent<Rigidbody>();
+        anim = GetComponent<Animator>();
         p_attack = GetComponent<PlayerAttack>();
         weapon = transform.GetChild(0).GetComponent<Weapon>();
     }
@@ -65,8 +73,9 @@ public class PlayerMovement : MonoBehaviour
     {
     }
 
-    void Update()
+    void LateUpdate()
     {
+
         float dt = Time.deltaTime;
 
         if (state == State.FREEZ)
@@ -77,6 +86,15 @@ public class PlayerMovement : MonoBehaviour
         {
           Movement(dt);
         }
+        rb.velocity = Vector3.zero;
+    }
+    private int SafeNet()
+    {
+      if (transform.position.x < -42)
+        return 0;
+      else if (transform.position.x > 42)
+        return 1;
+      return 2;
     }
     private void Movement(float dt)
     {
@@ -84,14 +102,14 @@ public class PlayerMovement : MonoBehaviour
       {
         dashTimer -= dt;
       }
-      if (state == State.DASH)
-      {
-          if (GoToDest(DashDest, d_multi))
-          {
-          }
-          else
-            state = State.FALL;
-      }
+      // if (state == State.DASH)
+      // {
+      //     if (GoToDest(DashDest, d_multi))
+      //     {
+      //     }
+      //     else
+      //       state = State.FALL;
+      // }
       if (state == State.FALL || state == State.JUMP)
       {
         JumpBehavior();
@@ -103,10 +121,7 @@ public class PlayerMovement : MonoBehaviour
         Move();
         JumpDetection();
       }
-      if (state == State.FALL)
-      {
-        DownAirDetection();
-      }
+      DownAirDetection();
     }
     public void DashDownAir()
     {
@@ -132,9 +147,13 @@ public class PlayerMovement : MonoBehaviour
         Vector3 dest = new Vector3(direction.x, 0, 0);
 
         if (IsFall())
+        {
           transform.position += dest * airSpeed;
+        }
         else
+        {
           transform.position += dest * groundSpeed;
+        }
       }
     }
     private void JumpBehavior()
@@ -172,7 +191,7 @@ public class PlayerMovement : MonoBehaviour
     {
       state = State.J_PEND;
 
-      weapon.SetAttackType(0);
+      // weapon.SetAttackType(0);
       yield return new WaitForSeconds(jumpDelay);
       
       if (!jumpFreeze)
@@ -207,19 +226,39 @@ public class PlayerMovement : MonoBehaviour
         Vector3 dest = transform.position + new Vector3(side, 0, 0);
         
         DashDest = dest;
-        speed = DashSpeed;
-        state = State.DASH;
+        anim.SetTrigger("Dash");
+        // speed = DashSpeed;
+        // state = State.DASH;
       }
     }
-    
+    public void GoToDashDest()
+    {
+      transform.position = DashDest;
+    }
+
+//  public void Dash()
+//     {
+//       if (state != State.DASH && dashTimer <= 0)
+//       {
+//         dashTimer = DashDelay;
+        
+//         float side = DashLenght * dashSide;
+
+//         Vector3 dest = transform.position + new Vector3(side, 0, 0);
+        
+//         DashDest = dest;
+//         speed = DashSpeed;
+//         state = State.DASH;
+//       }
+//     }    
     /////////////////////////////////////// Tools ///////////////////////////////////////////////////
 
     private void DownAirDetection()
     {
-        if (joysticMov.Vertical <= 0.2f)
-          downAirOn = true;
+        if (joysticMov.Vertical <= -0.8f)
+          A_down = true;
         else
-          downAirOn = false;
+          A_down = false;
     }
     
     public void FreezeJump()
@@ -267,6 +306,12 @@ public class PlayerMovement : MonoBehaviour
         return true;
       return false;
     }
+    public bool IsOnGround()
+    {
+       if (state == State.NONE)
+        return true;
+      return false;
+    }
     public bool IsPend()
     {
       if (state == State.J_PEND)
@@ -289,5 +334,9 @@ public class PlayerMovement : MonoBehaviour
       else if (joysticMov.Horizontal >= 0.3f)
         x = 0.1f;
       direction = new Vector3(x, 0, 0);
+    }
+    public void DashEffect()
+    {
+        fx_dash.Play();
     }
 }
