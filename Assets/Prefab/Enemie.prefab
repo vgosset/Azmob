@@ -9420,7 +9420,7 @@ MonoBehaviour:
   Target: {fileID: 0}
   distCac: 1.5
   distance: 6
-  followSpeed: 3.5
+  followSpeed: 3
   runMulti: 1.2
   fireDelay: 1.2
   anim: {fileID: 0}

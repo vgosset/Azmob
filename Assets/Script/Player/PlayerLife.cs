@@ -59,6 +59,17 @@ public class PlayerLife : MonoBehaviour
         p_move.enabled = false;
 
         anim.SetTrigger("die");
+
+        UiManager.Instance.EndScreen();
+        MainManager.Instance.DestroyAllEnemies();
+        
+        Camera.main.GetComponent<MainCamera>().enabled = false;
+
+        Invoke ("DestroySelf", 2f);
+    }
+    private void DestroySelf()
+    {
+        Destroy(this.gameObject);
     }
     public void ResetHit()
     {

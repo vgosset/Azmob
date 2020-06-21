@@ -75,7 +75,6 @@ public class PlayerAttack : ComboManager
     private void Attack()
     {
         DefineAttackType();
-
         StopAllCoroutines();
         StartCoroutine(FreezMovement());
     }

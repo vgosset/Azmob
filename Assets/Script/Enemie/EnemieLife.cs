@@ -59,7 +59,7 @@ public class EnemieLife : MonoBehaviour
         }
         return false;
     }
-    private void Die()
+    public void Die()
     {
         alive = false;
 

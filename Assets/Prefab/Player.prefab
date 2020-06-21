@@ -9503,13 +9503,13 @@ MonoBehaviour:
   joysticMov: {fileID: 0}
   fx_dash: {fileID: 892477740526086308}
   jumpHeight: 7
-  jumpDelay: 0.3
+  jumpDelay: 0
   DashLenght: 6
   DashSpeed: 20
   DashDelay: 1.5
   jumpSpeed: 25
   fallingSpeed: 8
-  groundSpeed: 1.5
+  groundSpeed: 1.6
   airSpeed: 1.3
   j_multi: -17
   d_multi: 50
@@ -9555,8 +9555,8 @@ MonoBehaviour:
   timer_hit: 0
   fireTimer: 0
   timer_type: 0
-  delayInAir: 0.6
-  jumpDelay: 0.35
+  delayInAir: 0.5
+  jumpDelay: 0.25
 --- !u!114 &557243789
 MonoBehaviour:
   m_ObjectHideFlags: 0

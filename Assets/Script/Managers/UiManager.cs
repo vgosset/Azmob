@@ -23,11 +23,15 @@ public class UiManager : MonoBehaviour
 
     private float m_life;
     private Color32 fillColor;
+
+    private Animator anim;
     
     private void Awake()
     {
         Instance = this;
         fillColor = fill.color;
+
+        anim = GetComponent<Animator>();
     }
 
     private void Update()
@@ -89,5 +93,9 @@ public class UiManager : MonoBehaviour
         popUp.SetTrigger("popUp");
         landscape.NextLandscape();
         popUp.transform.GetChild(0).GetComponent<Text>().text = spawnTxt;
+    }
+    public void EndScreen()
+    {
+        anim.SetTrigger("endScreen");
     }
 }
